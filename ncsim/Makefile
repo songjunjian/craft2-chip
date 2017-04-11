@@ -8,9 +8,12 @@ include $(base_dir)/Makefrag
 
 simv = $(sim_dir)/simv-$(PROJECT)-$(CONFIG)
 simv_debug = $(sim_dir)/simv-$(PROJECT)-$(CONFIG)-debug
+simv_jtag = $(sim_dir)/simv-$(PROJECT)-$(CONFIG)-jtag
 
 sim: $(simv)
 debug: $(simv_debug)
+jtag: $(simv_jtag)
+.PHONY: jtag
 
 
 sim_vsrcs = \
@@ -122,6 +125,30 @@ $(simv): $(sim_vsrcs) $(sim_csrcs) $(sim_svsrcs) $(uart_vsrcs) $(sim_dir)/Makefi
 	@echo '' >> $@
 	@echo 'echo irun -define "$$DEFINE" "$$VARS" -64 -R -nclibdirname $@.daidir' >> $@
 	@echo 'irun -define "$$DEFINE" "$$VARS" -64 -R -nclibdirname $@.daidir' >> $@
+	chmod +x $@
+	cp $(build_dir)/*.cde .
+
+$(simv_jtag) : $(sim_vsrcs) $(sim_csrcs) $(sim_svsrcs) $(uart_vsrcs) $(sim_dir)/Makefile $(base_dir)/vsrc/JtagTestHarness.v
+	rm -rf csrc && $(IRUN) $(IRUN_OPTS) $(base_dir)/vsrc/JtagTestHarness.v +define+DEBUG +define+JTAG_HARNESS -linedebug -elaborate -nclibdirname $@.daidir
+	rm -f $@
+	touch $@
+	@echo '#!/bin/bash' >> $@
+	@echo '' >> $@
+	@echo 'VARS=""' >> $@
+	@echo 'DEFINE=""' >> $@
+	@echo 'while [[ $$# -gt 0 ]]' >> $@
+	@echo 'do' >> $@
+	@echo '  arg="$$1"' >> $@
+	@echo '  if [[ "$$arg" == +* ]] ; then' >> $@
+	@echo '    VARS="$$VARS $$arg"' >> $@
+	@echo '  else' >> $@
+	@echo '    DEFINE="$$arg"' >> $@
+	@echo '  fi' >> $@
+	@echo '  shift' >> $@
+	@echo 'done' >> $@
+	@echo '' >> $@
+	@echo 'echo irun -define "$$DEFINE" "$$VARS" -64 -R -input probe.tcl -nclibdirname $@.daidir' >> $@
+	@echo 'irun -define "$$DEFINE" "$$VARS" -64 -R -input probe.tcl -nclibdirname $@.daidir' >> $@
 	chmod +x $@
 	cp $(build_dir)/*.cde .
 
