@@ -12,6 +12,7 @@ export VCS_64=1
 # memory compiler
 export INTERRAD_LICENSE_FILE=/tools/commercial/interra/flexlm/license_N28.dat
 export TSMCHOME=/tools/tstech16/CLN16FFC/TSMCHOME
+#export TSMCHOME=/tools/tstech16/TSMCHOME
 
 # temporary, hopefully
 export MC2_INSTALL_DIR=~stevo.bailey/mc2/MC2_2013.12.00.f
