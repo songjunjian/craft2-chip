@@ -17,8 +17,8 @@ sim_vsrcs = \
 	$(build_dir)/$(long_name).v \
 	$(build_dir)/$(long_name).harness.v \
 	$(build_dir)/$(long_name).mems.v \
-	$(build_dir)/$(long_name).top.v \
 	$(build_dir)/$(long_name).pads.v \
+	$(build_dir)/$(long_name).top.v \
 	$(build_dir)/mems.behav.v \
 	$(build_dir)/pads.behav.v \
 	$(base_dir)/vsrc/TestDriver.v \
