@@ -14,18 +14,20 @@ debug: $(simv_debug)
 
 
 sim_vsrcs = \
+	$(base_dir)/vsrc/TestDriver.v \
 	$(build_dir)/$(long_name).v \
 	$(build_dir)/$(long_name).harness.v \
 	$(build_dir)/$(long_name).mems.v \
-	$(build_dir)/$(long_name).pads.v \
-	$(build_dir)/$(long_name).top.v \
-	$(build_dir)/mems.behav.v \
-	$(build_dir)/pads.behav.v \
-	$(base_dir)/vsrc/TestDriver.v \
 	$(base_dir)/vsrc/SimSerial.v \
 	$(base_dir)/vsrc/des72to288.v \
-	$(base_dir)/vsrc/CLKRX.v \
-	$(base_dir)/vsrc/AsyncResetReg.v
+	$(base_dir)/raven3_lvss/verilog/RAVEN3_LVSS.v \
+	$(base_dir)/vsrc/AsyncResetReg.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_BB_180207A/4.4-01.00/behaviour/verilog/SPHD_BB_180207A.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_BB_180207B/4.4-00.00/behaviour/verilog/SPHD_BB_180207B.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_BB_180207C/4.4-01.00/behaviour/verilog/SPHD_BB_180207C.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_DPREG_BB_180207/4.4-00.00/behaviour/verilog/DPREG_BB_180207.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPREG_BB_180207/4.4-00.00/behaviour/verilog/SPREG_BB_180207.v \
+	
 
 sim_csrcs = \
 	$(base_dir)/csrc/SimSerial.cc
@@ -42,9 +44,7 @@ CUSTOM_FLAGS := \
   +define+CORE_CLOCK_PERIOD=$(core_clock_period) \
   +define+SERIAL_CLOCK_PERIOD=$(serial_clock_period) \
   +define+DSP_CLOCK_PERIOD=$(dsp_clock_period) \
-	+define+TSMC_CM_UNIT_DELAY \
-	+define+TSMC_CM_NO_WARNING \
-	+define+TSMC_INITIALIZE_MEM
+  +define+functional=1 \
 
 IRUN = irun -64
 
@@ -53,10 +53,10 @@ IRUN_OPTS = \
 	"-I$(RISCV)/include" \
 	-Wld,-Xlinker,-rpath,$(RISCV)/lib \
 	-Wcxx,-std=c++11 \
-	-I$(sim_dir)/generated-src \
+	-I$(build_dir) \
 	$(RISCV)/lib/libfesvr.so \
 	-sv \
-	+incdir+$(sim_dir)/generated-src \
+	+incdir+$(build_dir) \
 	$(sim_vsrcs) $(sim_csrcs) \
 	$(filter-out %.vh,$(sim_svsrcs)) \
 	+define+PRINTF_COND=$(TB).printf_cond \
@@ -68,7 +68,7 @@ IRUN_OPTS = \
 	+libext+.v \
 	+vpi \
 	-DVCS_VPI \
-	-timescale 1ns/10ps \
+	-timescale 1ns/1ps \
 	-ccext .c \
 	-access +R \
 	$(CUSTOM_FLAGS)
@@ -95,7 +95,6 @@ $(simv): $(sim_vsrcs) $(sim_csrcs) $(sim_svsrcs) $(uart_vsrcs) $(sim_dir)/Makefi
 	@echo 'echo irun -define "$$DEFINE" "$$VARS" -64 -R -nclibdirname $@.daidir' >> $@
 	@echo 'irun -define "$$DEFINE" "$$VARS" -64 -R -nclibdirname $@.daidir' >> $@
 	chmod +x $@
-	-cp $(build_dir)/*.cde .
 
 $(simv_debug) : $(sim_vsrcs) $(sim_csrcs) $(sim_svsrcs) $(uart_vsrcs) $(sim_dir)/Makefile
 	rm -rf csrc && $(IRUN) $(IRUN_OPTS) +define+DEBUG -linedebug -elaborate -nclibdirname $@.daidir
@@ -119,10 +118,9 @@ $(simv_debug) : $(sim_vsrcs) $(sim_csrcs) $(sim_svsrcs) $(uart_vsrcs) $(sim_dir)
 	@echo 'echo irun -define "$$DEFINE" "$$VARS" -64 -R -input probe.tcl -nclibdirname $@.daidir' >> $@
 	@echo 'irun -define "$$DEFINE" "$$VARS" -64 -R -input probe.tcl -nclibdirname $@.daidir' >> $@
 	chmod +x $@
-	-cp $(build_dir)/*.cde .
 
 clean:
-	rm -rf csrc simv-* ucli.key vc_hdrs.h $(build_dir) output DVEfiles $(sim_svsrcs) *.cde
+	rm -rf csrc simv-* ucli.key vc_hdrs.h $(build_dir) output DVEfiles $(sim_svsrcs)
 
 .PHONY: clean
 

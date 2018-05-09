@@ -17,10 +17,6 @@ sim_vsrcs = \
 	$(build_dir)/$(long_name).v \
 	$(build_dir)/$(long_name).harness.v \
 	$(build_dir)/$(long_name).mems.v \
-	$(build_dir)/$(long_name).top.v \
-	$(build_dir)/$(long_name).pads.v \
-	$(build_dir)/mems.behav.v \
-	$(build_dir)/pads.behav.v \
 	$(base_dir)/vsrc/TestDriver.v \
 	$(base_dir)/vsrc/SimSerial.v \
 	$(base_dir)/vsrc/des72to288.v \
@@ -42,9 +38,7 @@ CUSTOM_FLAGS := \
   +define+CORE_CLOCK_PERIOD=$(core_clock_period) \
   +define+SERIAL_CLOCK_PERIOD=$(serial_clock_period) \
   +define+DSP_CLOCK_PERIOD=$(dsp_clock_period) \
-	+define+TSMC_CM_UNIT_DELAY \
-	+define+TSMC_CM_NO_WARNING \
-	+define+TSMC_INITIALIZE_MEM
+	+verbose
 
 VCS = vcs -full64
 
