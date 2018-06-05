@@ -22,11 +22,12 @@ sim_vsrcs = \
 	$(base_dir)/vsrc/des72to288.v \
 	$(base_dir)/raven3_lvss/verilog/RAVEN3_LVSS.v \
 	$(base_dir)/vsrc/AsyncResetReg.v \
-	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_BB_180207A/4.4-01.00/behaviour/verilog/SPHD_BB_180207A.v \
-	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_BB_180207B/4.4-00.00/behaviour/verilog/SPHD_BB_180207B.v \
-	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_BB_180207C/4.4-01.00/behaviour/verilog/SPHD_BB_180207C.v \
-	/tools/stalpha/cmos28fdsoi_29/C28SOI_DPREG_BB_180207/4.4-00.00/behaviour/verilog/DPREG_BB_180207.v \
-	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPREG_BB_180207/4.4-00.00/behaviour/verilog/SPREG_BB_180207.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_HIPERF_180502A/4.6-00.00/behaviour/verilog/SPHD_HIPERF_180502A.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_DPREG_HIPERF_180502/4.5-00.00/behaviour/verilog/DPREG_HIPERF_180502.v \
+  /tools/stalpha/cmos28fdsoi_29/C28SOI_SPHD_HIPERF_180502B/4.6-00.00/behaviour/verilog/SPHD_HIPERF_180502B.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPREG_LOLEAK_180502A/4.5-00.00/behaviour/verilog/SPREG_LOLEAK_180502A.v \
+  /tools/stalpha/cmos28fdsoi_29/C28SOI_SPREG_LOLEAK_180502B/4.5-00.00/behaviour/verilog/SPREG_LOLEAK_180502B.v \
+	/tools/stalpha/cmos28fdsoi_29/C28SOI_SPREG_LOLEAK_180502C/4.5-00.00/behaviour/verilog/SPREG_LOLEAK_180502C.v \
 	
 
 sim_csrcs = \
